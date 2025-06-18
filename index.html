@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Advanced Engineering Calculator</title>
+    <!-- Tailwind CSS CDN for basic styling -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Inter font from Google Fonts -->
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <!-- Link to your custom CSS file -->
+    <link rel="stylesheet" href="style.css" />
+    <style>
+      body {
+        font-family: "Inter", sans-serif;
+      }
+      /* Custom styles can go here or in style.css */
+      .calc-button {
+        @apply flex items-center justify-center p-3 sm:p-4 rounded-lg shadow-md transition-all duration-200 ease-in-out;
+        min-width: 50px; /* Ensure a minimum size */
+        min-height: 50px; /* Ensure a minimum size */
+        font-size: 1.1rem; /* Default font size for buttons */
+      }
+      .calc-button.text-small {
+        font-size: 0.95rem; /* Smaller font for some function names */
+      }
+      .calc-button:active {
+        transform: translateY(1px);
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+      }
+    </style>
+  </head>
+  <body
+    class="bg-gradient-to-br from-blue-100 to-purple-200 flex items-center justify-center min-h-screen p-4"
+  >
+    <div
+      class="calculator bg-white rounded-2xl shadow-xl p-6 w-full max-w-xl mx-auto border-4 border-blue-300"
+    >
+      <!-- Calculator Display -->
+      <div
+        class="display bg-gray-900 text-white rounded-xl p-5 mb-6 text-right overflow-hidden shadow-inner border border-gray-700"
+      >
+        <div
+          id="history-display"
+          class="text-sm text-gray-400 h-6 overflow-hidden whitespace-nowrap"
+        ></div>
+        <div
+          id="current-display"
+          class="text-4xl font-light h-12 flex items-center justify-end"
+        >
+          0
+        </div>
+        <div
+          id="mode-display"
+          class="text-xs text-blue-300 text-right mt-1 h-4"
+        >
+          DEG
+        </div>
+      </div>
+
+      <!-- Calculator Buttons Grid -->
+      <div class="grid grid-cols-6 gap-2 sm:gap-3">
+        <!-- Scientific Functions Row 1 -->
+        <button
+          class="calc-button bg-purple-500 text-white hover:bg-purple-600 text-small"
+          data-function="deg-rad"
+        >
+          DEG/RAD
+        </button>
+        <button
+          class="calc-button bg-red-500 text-white hover:bg-red-600"
+          data-action="clear"
+        >
+          AC
+        </button>
+        <button
+          class="calc-button bg-red-400 text-white hover:bg-red-500"
+          data-action="delete"
+        >
+          DEL
+        </button>
+        <button
+          class="calc-button bg-blue-600 text-white hover:bg-blue-700"
+          data-type="paren"
+        >
+          (
+        </button>
+        <button
+          class="calc-button bg-blue-600 text-white hover:bg-blue-700"
+          data-type="paren"
+        >
+          )
+        </button>
+        <button
+          class="calc-button bg-orange-500 text-white hover:bg-orange-600"
+          data-function="mod"
+        >
+          %
+        </button>
+
+        <!-- Scientific Functions Row 2 -->
+        <button
+          class="calc-button bg-blue-500 text-white hover:bg-blue-600"
+          data-function="sin"
+        >
+          sin
+        </button>
+        <button
+          class="calc-button bg-blue-500 text-white hover:bg-blue-600"
+          data-function="cos"
+        >
+          cos
+        </button>
+        <button
+          class="calc-button bg-blue-500 text-white hover:bg-blue-600"
+          data-function="tan"
+        >
+          tan
+        </button>
+        <button
+          class="calc-button bg-blue-500 text-white hover:bg-blue-600 text-small"
+          data-function="asin"
+        >
+          asin
+        </button>
+        <button
+          class="calc-button bg-blue-500 text-white hover:bg-blue-600 text-small"
+          data-function="acos"
+        >
+          acos
+        </button>
+        <button
+          class="calc-button bg-blue-500 text-white hover:bg-blue-600 text-small"
+          data-function="atan"
+        >
+          atan
+        </button>
+
+        <!-- Scientific Functions Row 3 -->
+        <button
+          class="calc-button bg-blue-500 text-white hover:bg-blue-600 text-small"
+          data-function="sinh"
+        >
+          sinh
+        </button>
+        <button
+          class="calc-button bg-blue-500 text-white hover:bg-blue-600 text-small"
+          data-function="cosh"
+        >
+          cosh
+        </button>
+        <button
+          class="calc-button bg-blue-500 text-white hover:bg-blue-600 text-small"
+          data-function="tanh"
+        >
+          tanh
+        </button>
+        <button
+          class="calc-button bg-purple-500 text-white hover:bg-purple-600"
+          data-function="log"
+        >
+          log
+        </button>
+        <button
+          class="calc-button bg-purple-500 text-white hover:bg-purple-600"
+          data-function="ln"
+        >
+          ln
+        </button>
+        <button
+          class="calc-button bg-purple-500 text-white hover:bg-purple-600"
+          data-function="exp"
+        >
+          e^x
+        </button>
+
+        <!-- Operators & Numbers -->
+        <button
+          class="calc-button bg-purple-500 text-white hover:bg-purple-600"
+          data-function="sqrt"
+        >
+          √
+        </button>
+        <button
+          class="calc-button bg-purple-500 text-white hover:bg-purple-600 text-small"
+          data-function="cbrt"
+        >
+          ∛
+        </button>
+        <button
+          class="calc-button bg-purple-500 text-white hover:bg-purple-600"
+          data-function="power"
+        >
+          x^y
+        </button>
+        <button
+          class="calc-button bg-gray-200 text-gray-800 hover:bg-gray-300"
+          data-type="number"
+        >
+          7
+        </button>
+        <button
+          class="calc-button bg-gray-200 text-gray-800 hover:bg-gray-300"
+          data-type="number"
+        >
+          8
+        </button>
+        <button
+          class="calc-button bg-gray-200 text-gray-800 hover:bg-gray-300"
+          data-type="number"
+        >
+          9
+        </button>
+
+        <button
+          class="calc-button bg-purple-500 text-white hover:bg-purple-600"
+          data-function="fact"
+        >
+          x!
+        </button>
+        <button
+          class="calc-button bg-purple-500 text-white hover:bg-purple-600"
+          data-function="pi"
+        >
+          &pi;
+        </button>
+        <button
+          class="calc-button bg-purple-500 text-white hover:bg-purple-600"
+          data-function="e"
+        >
+          e
+        </button>
+        <button
+          class="calc-button bg-gray-200 text-gray-800 hover:bg-gray-300"
+          data-type="number"
+        >
+          4
+        </button>
+        <button
+          class="calc-button bg-gray-200 text-gray-800 hover:bg-gray-300"
+          data-type="number"
+        >
+          5
+        </button>
+        <button
+          class="calc-button bg-gray-200 text-gray-800 hover:bg-gray-300"
+          data-type="number"
+        >
+          6
+        </button>
+
+        <button
+          class="calc-button bg-gray-600 text-white hover:bg-gray-700 text-small"
+          data-memory="m-plus"
+        >
+          M+
+        </button>
+        <button
+          class="calc-button bg-gray-600 text-white hover:bg-gray-700 text-small"
+          data-memory="m-minus"
+        >
+          M-
+        </button>
+        <button
+          class="calc-button bg-gray-600 text-white hover:bg-gray-700 text-small"
+          data-memory="mr"
+        >
+          MR
+        </button>
+        <button
+          class="calc-button bg-gray-200 text-gray-800 hover:bg-gray-300"
+          data-type="number"
+        >
+          1
+        </button>
+        <button
+          class="calc-button bg-gray-200 text-gray-800 hover:bg-gray-300"
+          data-type="number"
+        >
+          2
+        </button>
+        <button
+          class="calc-button bg-gray-200 text-gray-800 hover:bg-gray-300"
+          data-type="number"
+        >
+          3
+        </button>
+
+        <button
+          class="calc-button bg-yellow-500 text-white hover:bg-yellow-600"
+          data-type="operator"
+        >
+          /
+        </button>
+        <button
+          class="calc-button bg-yellow-500 text-white hover:bg-yellow-600"
+          data-type="operator"
+        >
+          *
+        </button>
+        <button
+          class="calc-button bg-yellow-500 text-white hover:bg-yellow-600"
+          data-type="operator"
+        >
+          -
+        </button>
+        <button
+          class="calc-button bg-gray-200 text-gray-800 hover:bg-gray-300"
+          data-type="number"
+        >
+          0
+        </button>
+        <button
+          class="calc-button bg-gray-200 text-gray-800 hover:bg-gray-300"
+          data-type="number"
+        >
+          .
+        </button>
+        <button
+          class="calc-button bg-green-500 text-white hover:bg-green-600"
+          data-action="calculate"
+        >
+          =
+        </button>
+
+        <button
+          class="calc-button bg-gray-600 text-white hover:bg-gray-700 text-small"
+          data-memory="mc"
+        >
+          MC
+        </button>
+        <button
+          class="calc-button bg-purple-500 text-white hover:bg-purple-600"
+          data-function="ans"
+        >
+          Ans
+        </button>
+        <button
+          class="calc-button bg-yellow-500 text-white hover:bg-yellow-600 col-span-2"
+          data-type="operator"
+        >
+          +
+        </button>
+      </div>
+    </div>
+
+    <!-- Link to your JavaScript file -->
+    <script src="script.js"></script>
+  </body>
+</html>
